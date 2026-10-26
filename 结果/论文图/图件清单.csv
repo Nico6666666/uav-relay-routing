@@ -1,0 +1,37 @@
+﻿语言,图号,文件,字节,sha256,数据源,生成命令
+中文,1,中文/图01_场景与DEM.png,1913505,864c57bc2611f21d1a3e10bd07515bde821617a16b18e607883c854ff0499105,基础数据/DEM + 调度中心与服务区,python 工具/绘图/生成论文图.py --语言 all
+中文,1,中文/图01_场景与DEM.svg,386781,4d42f9e228b4ed37d5324fdf3eda19f1155daff8efa5b77da53cf3dea848118a,基础数据/DEM + 调度中心与服务区,python 工具/绘图/生成论文图.py --语言 all
+中文,2,中文/图02_求解框架.png,70009,e0773ec64020a0b3a452e2cd0703b5be69b42b61c68c95ff6545866f763053f8,手工绘制（求解框架）,python 工具/绘图/生成论文图.py --语言 all
+中文,2,中文/图02_求解框架.svg,5716,cf5d95b0453b85788872007c7160e1bccf9fe1aa4fdfc8f137c744ce37fd5bbe,手工绘制（求解框架）,python 工具/绘图/生成论文图.py --语言 all
+中文,3,中文/图03_通信缺口.png,101213,38501d46869dad98c64ce318bbfd8fd95fec4c3a85437c7dc430b65fba67c9d8,联合调度与中继/方案检验/各方案/最及时/通信缺口清单.csv,python 工具/绘图/生成论文图.py --语言 all
+中文,3,中文/图03_通信缺口.svg,40138,aea15244fe91ae7a47052f0fd8cd066602bfa34872a5f5d6adcc5873fa922f52,联合调度与中继/方案检验/各方案/最及时/通信缺口清单.csv,python 工具/绘图/生成论文图.py --语言 all
+中文,4,中文/图04_Pareto前沿.png,170182,01738aa39b7d5513cdeb3472bef817946dedb4a080a48fb13b20a6d0882b2673,联合调度与中继/五目标优化/Pareto前沿.csv + 代表方案.json,python 工具/绘图/生成论文图.py --语言 all
+中文,4,中文/图04_Pareto前沿.svg,36643,833bd7d50b49bc1c853822a346a3244cd8ef9c5d146e4bb9e970774094ecb25b,联合调度与中继/五目标优化/Pareto前沿.csv + 代表方案.json,python 工具/绘图/生成论文图.py --语言 all
+中文,5,中文/图05_调度甘特图.png,76664,be43f864b686e0fa8df9be99be1d696f9032d3f7db87f544361ec03156d9419a,联合调度与中继/方案检验/各方案/最及时/架次安排.csv,python 工具/绘图/生成论文图.py --语言 all
+中文,5,中文/图05_调度甘特图.svg,23251,2df6731d92c723607500625b3faa05ec97910d8aaa093f52050bbc2dffa7dda4,联合调度与中继/方案检验/各方案/最及时/架次安排.csv,python 工具/绘图/生成论文图.py --语言 all
+中文,6,中文/图06_中继覆盖.png,183242,cbc9a9d6858ad76d182d0a17ed6d2f1313bd9575b91f41b3beb172fa729bd482,中继架次与悬停站.csv + 通信保障关系.csv,python 工具/绘图/生成论文图.py --语言 all
+中文,6,中文/图06_中继覆盖.svg,36129,96e48c44e3a1cc31094f89b67d1c2321a2af066fe771f5632b17e31aacee0278,中继架次与悬停站.csv + 通信保障关系.csv,python 工具/绘图/生成论文图.py --语言 all
+中文,7,中文/图07_消融.png,112160,cc07fe5c5aac16618de28c5022b2f09d953094688a833da624dc23fc38907013,待补（E3 消融）,python 工具/绘图/生成论文图.py --语言 all
+中文,7,中文/图07_消融.svg,20664,81fab06c16f0b14c6ece41d1d734e9885e7572b67fd274912955f55b002a2d93,待补（E3 消融）,python 工具/绘图/生成论文图.py --语言 all
+中文,8,中文/图08_灵敏度.png,256059,3f7498cd379ebf69f99d5ac2ab619079ed8be7af4d5841d9e5f76c15ab68b76e,待补（E4 灵敏度）,python 工具/绘图/生成论文图.py --语言 all
+中文,8,中文/图08_灵敏度.svg,33861,104e0c25fefb177f4765f9bb1d86f94f42082e66f4267e72c4507f87a3e3e1c7,待补（E4 灵敏度）,python 工具/绘图/生成论文图.py --语言 all
+中文,9,中文/图09_可扩展性.png,167901,60320cf6b9f6bcae91e8362c080efe6f51706c0c74c4b2fb544277f0149cbd85,待补（E5 可扩展性）,python 工具/绘图/生成论文图.py --语言 all
+中文,9,中文/图09_可扩展性.svg,28204,344e2d2ed4bff36170fad94e5d39cffed271d2dda0a6f67883139754b77d2560,待补（E5 可扩展性）,python 工具/绘图/生成论文图.py --语言 all
+英文,1,英文/Fig01_Scenario_DEM.png,1920726,57aca8a3e8d8cc03b28d29532e110568a6e49b27cff67a9e6e16ad7c679f0b23,基础数据/DEM + 调度中心与服务区,python 工具/绘图/生成论文图.py --语言 all
+英文,1,英文/Fig01_Scenario_DEM.svg,387300,512897905355ac6cfb1bc0f147b12ac1dede1f27fef237c31705e5ab9ac947c2,基础数据/DEM + 调度中心与服务区,python 工具/绘图/生成论文图.py --语言 all
+英文,2,英文/Fig02_Framework.png,79442,1f9de9a7c82236e964eefdcdb7cffb71f19069ae14701ecec7d4d263c1e7b8c9,手工绘制（求解框架）,python 工具/绘图/生成论文图.py --语言 all
+英文,2,英文/Fig02_Framework.svg,5799,d7cfbc2315c661196d599b1677e44fec15ab0b452dde7c29aea39034dca78c80,手工绘制（求解框架）,python 工具/绘图/生成论文图.py --语言 all
+英文,3,英文/Fig03_Gaps.png,117057,580af61cb04f906313b791f98ff55c619022fb1fb9e4ca1f57659af49b2280f3,联合调度与中继/方案检验/各方案/最及时/通信缺口清单.csv,python 工具/绘图/生成论文图.py --语言 all
+英文,3,英文/Fig03_Gaps.svg,39116,fe1835d71bca34aece07f7bf725cb64bd45cab08d1a2072f7f6e58f8f22359ed,联合调度与中继/方案检验/各方案/最及时/通信缺口清单.csv,python 工具/绘图/生成论文图.py --语言 all
+英文,4,英文/Fig04_Pareto.png,172562,64980e59847ea24b70e607467a4201e8a2c3f6c56410d4538bed8f39dede4825,联合调度与中继/五目标优化/Pareto前沿.csv + 代表方案.json,python 工具/绘图/生成论文图.py --语言 all
+英文,4,英文/Fig04_Pareto.svg,35941,fd85dacca34d9beb086a502654fc5fcfa2a83940a4ef1bb4f78f41be380148f8,联合调度与中继/五目标优化/Pareto前沿.csv + 代表方案.json,python 工具/绘图/生成论文图.py --语言 all
+英文,5,英文/Fig05_Gantt.png,79955,4cda065f7448fe2410a8a4ecc95437567c5b224c001a50b54b6469810418fe9d,联合调度与中继/方案检验/各方案/最及时/架次安排.csv,python 工具/绘图/生成论文图.py --语言 all
+英文,5,英文/Fig05_Gantt.svg,22487,e81ae693c3e19bd95bea6036f8af93d659cd08e184f6bc6f03e36799812bc2b0,联合调度与中继/方案检验/各方案/最及时/架次安排.csv,python 工具/绘图/生成论文图.py --语言 all
+英文,6,英文/Fig06_RelayCoverage.png,203283,34a3409887e161802c4b8551a43699c6e5821e81f5c0026537f3734bd70496ba,中继架次与悬停站.csv + 通信保障关系.csv,python 工具/绘图/生成论文图.py --语言 all
+英文,6,英文/Fig06_RelayCoverage.svg,34257,ecb9334329b5c47f2b78349c95f1e1581f2a67a0624f51f9f68638d07fdbc7c4,中继架次与悬停站.csv + 通信保障关系.csv,python 工具/绘图/生成论文图.py --语言 all
+英文,7,英文/Fig07_Ablation.png,126380,c8b2f7183e346e46deb7ae6d24f0ea8e3f3036aec67840f3afa206212cd406ae,待补（E3 消融）,python 工具/绘图/生成论文图.py --语言 all
+英文,7,英文/Fig07_Ablation.svg,20036,152d032502e69e9cee2f9e252364fd06c5fa3c8402d0c6623c0a9b01c17e6d49,待补（E3 消融）,python 工具/绘图/生成论文图.py --语言 all
+英文,8,英文/Fig08_Sensitivity.png,244038,1c7496bab62bc721bea63b9849cd29a6c3024cfcd2a59a777c466f157eea4b5f,待补（E4 灵敏度）,python 工具/绘图/生成论文图.py --语言 all
+英文,8,英文/Fig08_Sensitivity.svg,32769,18626de10ce3fedce1cd223b698684d574a92f6ae3fe1f327a4c7cfb9a8db297,待补（E4 灵敏度）,python 工具/绘图/生成论文图.py --语言 all
+英文,9,英文/Fig09_Scalability.png,170555,672f7e8aa82059d1838f06535205873f393240d98c39461cbedf34d898b0483d,待补（E5 可扩展性）,python 工具/绘图/生成论文图.py --语言 all
+英文,9,英文/Fig09_Scalability.svg,27246,1937eb8b49fe6bbb09eb105f8671632f2f266e1bee9afe1b95d11f0ffe04aa13,待补（E5 可扩展性）,python 工具/绘图/生成论文图.py --语言 all

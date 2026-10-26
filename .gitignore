@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Ruff
+.ruff_cache/
+
+# 运行缓存（可重建）
+.性能校准.json
+.中继站解缓存.pkl
+
+# 编辑器
+.vscode/
+.idea/
+
+# 系统
+Thumbs.db
+.DS_Store
