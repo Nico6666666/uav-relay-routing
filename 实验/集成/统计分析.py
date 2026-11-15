@@ -25,10 +25,25 @@ from scipy.stats import wilcoxon
 
 def 读取():
     行 = []
-    for 行文本 in 逐次.read_text(encoding="utf-8").splitlines():
-        if 行文本.strip():
-            行.append(json.loads(行文本))
-    return 行
+    文件 = [逐次]
+    # 分实验输出（避免后跑的实验覆盖先跑的结果）与「完整」20 种子补充文件
+    for p in sorted(结果目录.glob("逐次_*.jsonl")):
+        if "备份" in p.name or "分块" in p.name:
+            continue
+        文件.append(p)
+    for p in 文件:
+        if not p.exists():
+            continue
+        for 行文本 in p.read_text(encoding="utf-8").splitlines():
+            if 行文本.strip():
+                行.append(json.loads(行文本))
+    # 同一 (实验, 配置, 实例, 种子) 只保留最后出现的记录：
+    # 分实验文件排在旧合并文件之后，且「完整」20 种子补充文件最后读入。
+    表 = {}
+    for r in 行:
+        键 = (r.get("实验"), r.get("配置"), r.get("实例"), r.get("种子"))
+        表[键] = r
+    return list(表.values())
 
 
 def 非支配(点集):

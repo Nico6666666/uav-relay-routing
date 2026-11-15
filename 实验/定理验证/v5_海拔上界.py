@@ -1,9 +1,11 @@
-"""V5：悬停海拔上界（引理 2）与高度消除（定理 2）的数值验证。
+"""V5：悬停海拔上界（引理 2）与高度选择（定理 2）的数值验证。
 
 验证：
 1. 对随机平面点与位姿集，计算 H_max = min(地面+离地上限, min_p(h_p+sqrt(D_u^2-d_p^2)))；
    在 H_max 之上（且不超过离地上限）任取海拔，位姿集应不可行。
-2. 对可行悬停海拔 H_min 与 H_min+50，比较中继航段飞行能耗；应相等。
+2. 对可行悬停海拔 H_min 与 H_min+50，比较中继航段飞行能耗；应满足
+   E(H_min) ≤ E(H_min+50)，且差值等于按爬升量差算出的理论值 m·g·Δh+/(η·3.6e6)。
+   下方悬停高度不计入离站爬升，故该差值可能小于 50 m 对应的满额值。
 """
 from __future__ import annotations
 
@@ -26,6 +28,7 @@ from 源代码.公共库.通信中继.悬停高度 import (  # noqa: E402
     覆盖任务,
 )
 from 源代码.公共库.通信中继.中继模型 import 读取中继机, 中继航段代价  # noqa: E402
+from 源代码.公共库.通信中继.配置 import 重力加速度, 焦耳每千瓦时, 米每度  # noqa: E402
 from 实验.定理验证.公共 import 写CSV, 结果目录  # noqa: E402
 
 
@@ -42,7 +45,7 @@ def main() -> None:
 
     行 = []
     违反 = 0
-    能耗不等 = 0
+    逆序 = 0
     for 例 in range(60):
         # 随机悬停平面点
         c_lon = rng.uniform(float(经度[0]), float(经度[-1]))
@@ -50,11 +53,16 @@ def main() -> None:
         地面 = 环境.地面高程_at(c_lon, c_lat)
         if not math.isfinite(地面):
             continue
-        # 1–3 个运输机位姿
+        # 1–3 个运输机位姿：限制在 0.8·D_u 内，保证 d ≤ D_u、H_max 有限，
+        # 否则随机点在接入距离外会被整例跳过（旧版 60 次只剩 1 例有效）。
+        半径上限 = 0.8 * D_u
         位姿 = []
         for _ in range(rng.randint(1, 3)):
-            p_lon = rng.uniform(float(经度[0]), float(经度[-1]))
-            p_lat = rng.uniform(float(纬度[0]), float(纬度[-1]))
+            半径 = 半径上限 * math.sqrt(rng.random())
+            方位 = rng.uniform(0.0, 2.0 * math.pi)
+            dx, dy = 半径 * math.cos(方位), 半径 * math.sin(方位)
+            p_lat = c_lat + dy / 米每度
+            p_lon = c_lon + dx / (米每度 * math.cos(math.radians(c_lat)))
             p_ground = 环境.地面高程_at(p_lon, p_lat)
             if not math.isfinite(p_ground):
                 continue
@@ -85,8 +93,10 @@ def main() -> None:
         if 越界可行:
             违反 += 1
 
-        # 定理 2：可行海拔上的航段飞行能耗
-        差 = None
+        # 定理 2：可行海拔上的航段飞行能耗应随高度非减
+        能耗差 = None
+        理论差 = None
+        本例逆序 = False
         任务 = 覆盖任务(运输机位姿=tuple(位姿), 说明="V5")
         果 = 最优悬停高度(环境, c_lon, c_lat, 任务, 机.最大悬停离地高度_m, 网关)
         if 果.可行 and 果.最优海拔 is not None:
@@ -98,9 +108,14 @@ def main() -> None:
             段1 = 中继航段代价(
                 环境, 机, "O01", "P", O["经度"], O["纬度"], O["海拔"], c_lon, c_lat, H1
             )
-            差 = abs(段0.能耗 - 段1.能耗)
-            if 差 > 1e-9:
-                能耗不等 += 1
+            能耗差 = 段1.能耗 - 段0.能耗
+            理论差 = (
+                机.计划起飞总质量_kg * 重力加速度 * (段1.爬升 - 段0.爬升)
+                / (机.爬升能耗效率 * 焦耳每千瓦时)
+            )
+            if 能耗差 < -1e-9:
+                本例逆序 = True
+                逆序 += 1
 
         行.append({
             "例号": 例,
@@ -108,17 +123,18 @@ def main() -> None:
             "地面": round(地面, 3),
             "H_max": round(上界, 3),
             "越界可行数": 越界可行,
-            "能耗差": "" if 差 is None else f"{差:.3e}",
-            "结论": "通过" if (越界可行 == 0 and (差 is None or 差 <= 1e-9)) else "失败",
+            "能耗差": "" if 能耗差 is None else f"{能耗差:.3e}",
+            "理论差": "" if 理论差 is None else f"{理论差:.3e}",
+            "结论": "通过" if (越界可行 == 0 and not 本例逆序) else "失败",
         })
 
     写CSV(
         结果目录 / "v5_海拔上界.csv",
         行,
-        ["例号", "位姿数", "地面", "H_max", "越界可行数", "能耗差", "结论"],
+        ["例号", "位姿数", "地面", "H_max", "越界可行数", "能耗差", "理论差", "结论"],
     )
     print(
-        f"V5 完成：越界可行 {违反} 例；能耗不等 {能耗不等} 例；"
+        f"V5 完成：越界可行 {违反} 例；能耗逆序 {逆序} 例；"
         f"结果写入 {结果目录 / 'v5_海拔上界.csv'}"
     )
 

@@ -1,7 +1,8 @@
-"""E3 完整配置补到 20 种子（3/4/5 区）。"""
+"""E3 完整配置补到 20 种子（3/4/5/6/7 区）。"""
 from __future__ import annotations
 
 import json
+import os
 import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
@@ -16,6 +17,8 @@ from 实验.集成.多种子实验 import 跑任务  # noqa: E402
     ("3区", ["S009", "S010", "S011"]),
     ("4区", ["S009", "S010", "S011", "S014"]),
     ("5区", ["S009", "S010", "S011", "S014", "S015"]),
+    ("6区", ["S009", "S010", "S011", "S012", "S014", "S015"]),
+    ("7区", ["S009", "S010", "S011", "S012", "S013", "S014", "S015"]),
 ]
 
 
@@ -30,7 +33,9 @@ def main() -> None:
                 "打磨": True, "任务类型": "solve",
             })
     行 = []
-    with ProcessPoolExecutor(max_workers=4, max_tasks_per_child=5) as 池:
+    # 任务级并行：默认用满本机 24 逻辑核中的 20 个（留出系统余量）。
+    进程数 = int(os.environ.get("REPRO_WORKERS", "20"))
+    with ProcessPoolExecutor(max_workers=进程数, max_tasks_per_child=5) as 池:
         表 = {池.submit(跑任务, t): t for t in 任务}
         for i, 任 in enumerate(as_completed(表), 1):
             try:

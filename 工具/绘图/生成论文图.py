@@ -5,7 +5,7 @@
     python 工具/绘图/生成论文图.py --语言 English
     python 工具/绘图/生成论文图.py --语言 all
 
-数据源：`结果/标准档_20261025/`。
+数据源：`结果/标准档_20261114/`。
 输出：`结果/论文图/中文/` 与 `结果/论文图/英文/`。
 """
 from __future__ import annotations
@@ -20,7 +20,8 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyBboxPatch
+from matplotlib.patches import FancyBboxPatch, Patch
+from matplotlib.lines import Line2D
 
 项目根 = Path(__file__).resolve().parents[2]
 if str(项目根) not in sys.path:
@@ -33,7 +34,7 @@ from 源代码.公共库.基础内核.数据读取 import (  # noqa: E402
     读取调度中心,
 )
 
-结果根 = 项目根 / "结果" / "标准档_20261025"
+结果根 = 项目根 / "结果" / "标准档_20261114"
 联合调度与中继 = 结果根 / "联合调度与中继"
 方案目录 = 联合调度与中继 / "方案检验" / "各方案" / "最及时"
 图根 = 项目根 / "结果" / "论文图"
@@ -178,13 +179,34 @@ def 图Pareto(语言: str, 输出: Path) -> None:
     代表 = 数据.get("代表方案", {})
 
     图, (轴1, 轴2) = plt.subplots(1, 2, figsize=(11, 4.6))
-    轴1.scatter(f2, f3, s=22, c="#4c72b0", alpha=0.75, label="")
-    轴2.scatter(f4, f5, s=22, c="#4c72b0", alpha=0.75, label="")
+    轴1.scatter(f2, f3, s=22, c="#4c72b0", alpha=0.75)
+    轴2.scatter(f4, f5, s=22, c="#4c72b0", alpha=0.75)
+    # 按五目标去重：两种准则可能选中同一方案
+    去重: dict[tuple, list[str]] = {}
     for 名, 方案 in 代表.items():
-        轴1.scatter([float(方案["联合任务完成时间_s"])], [float(方案["联合总能耗_kWh"])],
-                    marker="*", s=150, c="#c44e52", edgecolors="black", linewidths=0.4, zorder=5)
-        轴2.scatter([float(方案["运输架次数"])], [float(方案["中继架次数"])],
-                    marker="*", s=150, c="#c44e52", edgecolors="black", linewidths=0.4, zorder=5)
+        键 = (round(float(方案["联合任务完成时间_s"]), 6),
+              round(float(方案["联合总能耗_kWh"]), 6),
+              int(方案["运输架次数"]), int(方案["中继架次数"]))
+        去重.setdefault(键, []).append(名)
+    句柄 = []
+    for i, (键, 名表) in enumerate(去重.items(), start=1):
+        f2v, f3v, f4v, f5v = 键
+        轴1.scatter([f2v], [f3v], marker="*", s=220, c="#c44e52",
+                    edgecolors="black", linewidths=0.4, zorder=5)
+        轴2.scatter([f4v], [f5v], marker="*", s=220, c="#c44e52",
+                    edgecolors="black", linewidths=0.4, zorder=5)
+        轴1.annotate(str(i), (f2v, f3v), textcoords="offset points",
+                     xytext=(7, 4), fontsize=9, fontweight="bold", zorder=6)
+        轴2.annotate(str(i), (f4v, f5v), textcoords="offset points",
+                     xytext=(7, 4), fontsize=9, fontweight="bold", zorder=6)
+        if 语言 == "zh":
+            名文 = " / ".join(名表)
+        else:
+            名文 = " / ".join(代表方案英文.get(x, x) for x in 名表)
+        句柄.append(Line2D([0], [0], marker="*", color="w", markerfacecolor="#c44e52",
+                           markeredgecolor="black", markersize=12, label=f"{i}: {名文}"))
+    轴1.legend(handles=句柄, fontsize=7, loc="upper right", frameon=True,
+               framealpha=0.9, facecolor="white", edgecolor="none")
     轴1.set_xlabel(取("makespan", 语言))
     轴1.set_ylabel(取("energy", 语言))
     轴2.set_xlabel(取("transport_trips", 语言))
@@ -210,7 +232,14 @@ def 图甘特(语言: str, 输出: Path) -> None:
     轴.set_yticks(range(len(行)))
     轴.set_yticklabels(标签, fontsize=7)
     轴.set_xlabel(取("time_s", 语言))
-    轴.set_title(取("fig5_title", 语言))
+    轴.set_title("Gantt chart of the most timely plan" if 语言 == "en" else "最及时方案的调度甘特图")
+    轴.legend(
+        handles=[
+            Patch(color=颜色["运输"], label="Transport sortie" if 语言 == "en" else "运输架次"),
+            Patch(color=颜色["中继"], label="Relay sortie" if 语言 == "en" else "中继架次"),
+        ],
+        loc="lower right", fontsize=8, frameon=False,
+    )
     轴.grid(axis="x", alpha=0.3)
     保存(图, 输出, "图08_调度甘特图" if 语言 == "zh" else "Fig08_Gantt")
 

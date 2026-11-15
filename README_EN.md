@@ -53,15 +53,15 @@ Any solver can also be launched directly:
 python "源代码/求解器/联合调度与中继/五目标优化/主程序.py" --规模 快速
 ```
 
-**Reference wall-clock times** (24 logical cores / 8 processes; see
-[标准档运行记录](结果/标准档_20261025/运行记录.md)):
+**Reference wall-clock times** (24 logical cores / 20 processes; see
+[标准档运行记录](结果/标准档_20261114/运行记录.md)):
 
 | Program | Wall clock |
 |---|---:|
 | Maximum safe payload / feasible batching / exact frontier / reserve sensitivity | 2 / 1 / 2 / 3 s |
 | Multi-objective optimization / transport solution check | 40 / 15 s |
 | Cache warm-up | ~5 min |
-| Five-objective optimization (standard) / joint solution check | ~79 min / ~3 min |
+| Five-objective optimization (standard) / joint solution check | ~43 min / ~3 min |
 | Partition configuration / resource gap | 3 / 1 s |
 
 The joint solver exposes profiles `试跑 / 快速 / 标准 / 全量`; `标准` is the
@@ -94,7 +94,7 @@ uav-relay-routing/
 │   └── 实例/                         small-instance construction
 ├── 结果/                             results
 │   ├── 参考结果/                     earlier reference run (for comparison)
-│   ├── 标准档_20261025/              paper-standard results, run log, hash manifest
+│   ├── 标准档_20261114/              current paper-standard results, run log, hash manifest
 │   ├── 中间结果/                     fast-profile run
 │   ├── 多种子/                       multi-seed statistics
 │   ├── 精确基准/                      exact-benchmark CSVs and summary
@@ -223,7 +223,7 @@ for terrain obstruction and communication profiles. JSON keys are in Chinese;
 
 ## 8. Results and experiments
 
-- **Standard results**: `结果/标准档_20261025/` — the results cited in the paper
+- **Standard results**: `结果/标准档_20261114/` — the results currently cited in the paper, with the run log and hash manifest. `结果/标准档_20261025/` is the historical snapshot from before the relay-leg energy correction and is retained for comparison.
   and their hash manifest; `运行记录.md` records the environment and wall-clock times.
 - **Reference results**: `结果/参考结果/` for comparison with the current code.
 - **Experiment outputs**: `结果/精确基准/`, `结果/集成实验/`, `结果/多种子/`,
@@ -243,7 +243,7 @@ scalability, constraint/replication checks), and theorem verification (V1–V6).
 - **Self-check records**: each solver writes self-check results to the console,
   a `*.md`, and a `*.json`; failure raises `RuntimeError` instead of returning a
   silent wrong answer.
-- **Hash manifest**: `结果/标准档_20261025/哈希清单.csv` records byte size and
+- **Hash manifest**: `结果/标准档_20261114/哈希清单.csv` records byte size and
   SHA-256 for every standard-result file.
 - **Caching**: relay-station solutions are memoized by (hover point, gap pose)
   across runs; warm-up substantially shortens the joint solve.
