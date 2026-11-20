@@ -3,3 +3,4 @@
 numpy>=2,<3
 scipy>=1.15,<2
 matplotlib>=3.10,<4
+pymoo>=0.6,<0.7
